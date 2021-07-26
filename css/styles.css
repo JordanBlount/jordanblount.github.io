@@ -1,0 +1,55 @@
+html, *, *::before, *::after {
+    box-sizing: border-box;
+}
+
+body {
+    text-align: center;
+}
+
+.name {
+    color: blue;
+    text-decoration: underline gray;
+}
+
+p {
+    font-size: 1rem;
+}
+
+#myList {
+    color: green;
+}
+
+.favList {
+    text-decoration: underline gray;
+}
+
+body {
+    background-color: #d1feff;
+}
+
+a {
+    color: purple;
+}
+
+#landingImg {
+    position: static;
+}
+
+#intro {
+    position: static;
+}
+
+#bio {
+    font-size: 1.25rem;
+    color: purple;
+  }
+
+#sendMsg:hover {
+    background-color: coral;
+}
+
+input[type="text"] {
+    border: 0;
+    border-radius: 5px;
+    padding: 0.5em 0.6em;
+}
