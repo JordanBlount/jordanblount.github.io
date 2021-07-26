@@ -4,6 +4,12 @@ html, *, *::before, *::after {
 
 body {
     text-align: center;
+    background-color: #d1feff;
+    margin: 0 auto;
+}
+
+nav {
+    margin-top: 1em;
 }
 
 .name {
@@ -21,31 +27,62 @@ p {
 
 .favList {
     text-decoration: underline gray;
-}
-
-body {
-    background-color: #d1feff;
+    list-style: none;
 }
 
 a {
     color: purple;
 }
 
-#landingImg {
+/* #landingImg {
     position: static;
 }
 
 #intro {
     position: static;
-}
+} */
 
 #bio {
     font-size: 1.25rem;
     color: purple;
-  }
+}
+
+#bioHome {
+    margin-left: 15em;
+    margin-right: 15em;
+}
+
+.intro {
+    margin: 1em 0em;
+}
+
+#emailAddress {
+    margin: 1em 0em;
+    padding: 1em 1em;
+    width: 20rem;
+    border: 1px solid lightgray;
+}
+
+#emailMsg {
+    margin: 1em 0em;
+    padding: 0.5em 0.5em;
+}
+
+#sendMsg {
+    margin: 1em 1em;
+    padding: 0.75em 1em;
+    border-radius: 5px;
+    border: 1px solid black;
+    background-color: rgb(139, 86, 67);
+    color: white;
+}
 
 #sendMsg:hover {
-    background-color: coral;
+    background-color: rgb(161, 98, 76);
+}
+
+#sendMsg:active {
+    background-color: rgb(83, 51, 39);
 }
 
 input[type="text"] {
