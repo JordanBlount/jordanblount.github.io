@@ -1,5 +1,7 @@
 # Blackjack
 
+[Link to game](https://jordanblount.github.io/projects/blackjack/)
+
 This is my first project for my Software Engineering program at Per Scholas. I selected to do Blackjack (21) as it is a pretty simple game with straightforward rules, but I wanted to make it look really nice and work on both desktop and mobile devices.
 
 ## Rules

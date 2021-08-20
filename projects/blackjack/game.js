@@ -532,9 +532,9 @@ const changeTurns = () => {
 const hit = (player) => {
     if(!player.isBusted()) {
         dealer.dealCard(deck, player);
-
         if(!player.isDealer) {
             updatePoints(player.points);
+            playSound('button');
         } else {
 
         }
@@ -554,6 +554,9 @@ const stay = (player) => {
     if(!player.isBusted()) {
         console.log(`${player.name} chose to stay!`);
         // This means that the dealer has ended their turn and the game should now check to see who won
+        if(!player.isDealer) {
+            playSound('button');
+        }
         if(player.isDealer) {
             // TODO: Add a function to reveal the dealer's cards
             checkForRoundWinner();
@@ -567,11 +570,12 @@ const stay = (player) => {
 }
 
 const setupGame = (firstGame) => {
-    player1 = new Player("Player 1", [], 0, 500, [], [], 0, [], false);
+    player1 = new Player("Player 1", [], 0, 1250, [], [], 0, [], false);
     dealer = new Dealer("House", [], 0, 0, [], [], 0, [], true);
     deck = createDeck();
     deck.shuffle();
     gameStarted = true;
+    updateCash(player1.currentCash());
 
     console.log("Game was setup");
     console.log("Current Round: " + round);
@@ -580,6 +584,7 @@ const setupGame = (firstGame) => {
     dealer.dealTwoCards(deck, player1);
     updatePoints(player1.points);
     dealer.dealTwoCards(deck, dealer);
+    playSound('card shuffle');
 }
 
 const dealerMove = () => {
@@ -613,10 +618,14 @@ const checkForRoundWinner = () => {
             openResultScreen(`${dealer.name} busted!`);
         } else if(player1.isBusted() && !dealer.isBusted()) {
             player1.removeCash(player1.currentBet());
+            if(round % 3 === 0) {
+                playSound("bust");
+            }
             openResultScreen("You busted!");
         } else if(player1.points === 21) {
             player1.addCash(player1.currentBet())
             openResultScreen("Blackjack!");
+            playSound("sheesh");
         } else if(dealer.points === 21) {
             player1.removeCash(player1.currentBet());
             openResultScreen("Dealer got 21!");
@@ -628,6 +637,7 @@ const checkForRoundWinner = () => {
                 // Update module or buttons (to be able to prompt for next round)
                 player1.addCash(player1.currentBet());
                 openResultScreen("You win!");
+                playSound('round won');
             } else if(dealer.points > player1.points && !dealer.isBusted()) {
                 // Dealer wins
                 // Send "You lose message"
@@ -686,7 +696,8 @@ const nextRound = () => {
     round++;
     console.log("Current Round: " + round);
     updateCash(player1.currentCash());
-    updateBet(0);
+    updateBet(player1.currentBet());
+    removeDealerPoints();
     resetForNewRound();
 }
 
@@ -694,7 +705,7 @@ const checkIfOver = () => {
     // Logic for if player reachs a certain amount of cash or if plays 8 rounds successfully
     if(player1.isBroke()) {
         gameOver();
-    } else if(round === 8 || player1.currentCash() === 2000) {
+    } else if(player1.currentCash() === 2000) { //round === 8 || 
         gameOver();
     } else {
         nextRound();
@@ -712,6 +723,13 @@ const gameOver = () => {
         displayEndScreen(true);
     }
 }
+
+//
+//
+// All of my displaying logic is written down below
+//
+//
+//
 
 
 let startScreen = document.querySelector('#start-screen');
@@ -771,6 +789,7 @@ let nextBtn = null;
 let betInput = document.querySelector("#betting-amount");
 let cashAmt = document.querySelector("#player-currentMoney");
 let p1Points = document.querySelector("#player-points");
+let dPoints = document.querySelector("#dealer-points");
 
 let p1Cards = document.querySelector("#player-cards");
 let dCards = document.querySelector("#dealer-cards");
@@ -850,13 +869,23 @@ const updateBet = (amount) => {
 }
 
 const updateCash = (amount) => {
-    betInput.innerHTML = `$${amount}`;
+    //betInput.innerHTML = `$${amount}`;
     cashAmt.innerHTML = `$${amount}`;
 }
 
 const updatePoints = (amount) => {
     p1Points.innerHTML = `${amount}`;
 }
+
+const updateDealerPoints = (amount) => {
+    dPoints.classList.add('show');
+    dPoints.innerHTML = `${amount}`;
+}
+
+const removeDealerPoints = () => {
+    dPoints.classList.remove('show');
+    dPoints.innerHTML = ``;
+}   
 
 const setGameBoard = () => {
     let deckContainer = document.querySelector("");
@@ -883,6 +912,7 @@ let changeLowerOrRaiseBtn = () => {
         lowerOrRaiseBtn.classList.remove('lower');
         lowerOrRaiseBtn.classList.add('raise');
     }
+    playSound('toggle');
 }
 
 const changeDirection = () => {
@@ -994,6 +1024,7 @@ const chipBtn = (e) => {
     let chipBtn = e.target
     let chipValue = chipBtn.dataset.value;
     addChipToBetted(new Chip(parseInt(chipValue)));
+    playSound("chip 1");
     // if(raise) {
     //     if(player1.canBet(chipValue)) {
 
@@ -1036,17 +1067,19 @@ const closeBettingScreen = () => {
 }
 
 const finalizeBet = () => {
-    let bet = player1.currentBet();
+    player1.setBet(250);
+    playSound("bet set");
+    // let bet = player1.currentBet();
 
-    // Checks to see if your bet is not 0 && you can actually bet that 
-    // amount
-    if(bet === 0 && player1.canBet(bet)) {
-        console.log("LOL");
-    } else {
-        // Will not let you do anything
-        // TODO: Add some logic here that gives a visual cue
-        console.log("LOLOL");
-    }
+    // // Checks to see if your bet is not 0 && you can actually bet that 
+    // // amount
+    // if(bet === 0 && player1.canBet(bet)) {
+    //     console.log("LOL");
+    // } else {
+    //     // Will not let you do anything
+    //     // TODO: Add some logic here that gives a visual cue
+    //     console.log("LOLOL");
+    // }
     changeGameButtons("not");
 }
 
@@ -1069,6 +1102,7 @@ const displayEndScreen = (won) => {
     winnerOrLoser.classList.add('show');
     if(won) {
         finalText.innerHTML = "You have won the game!";
+        playSound('victory');
     } else {
         finalText.innerHTML = "You went completely broke!";
     }
@@ -1078,6 +1112,7 @@ const displayEndScreen = (won) => {
 const closeEndScreen = () => {
     gameOverlay.classList.remove('show');
     winnerOrLoser.classList.remove('show');
+    updateDealerPoints(0);
     totalReset()
     setupGame(false);
 }
@@ -1093,6 +1128,8 @@ const openResultScreen = (resultText) => {
 
     // Any game logic to happen right before a round is reset
     dealer.flip();
+    updateCash(player1.currentCash());
+    updateDealerPoints(dealer.currentPoints());
     changeGameButtons("next");
 
     surface.addEventListener('click', closeResultScreen);
@@ -1111,6 +1148,62 @@ const closeResultScreen = (target) => {
         } else {
             resultScreenIsOpen = true;
         }
+    }
+}
+
+let sound_bet_set = document.querySelector('#sound-bet_set');
+let sound_chip_1 = document.querySelector('#sound-chip_1');
+let sound_dealing_cards = document.querySelector('#sound-dealing_cards');
+let sound_card_shuffle = document.querySelector('#sound-card_shuffle');
+let sound_bust = document.querySelector('#sound-bust');
+let sound_sheesh = document.querySelector('#sound-sheesh');
+let sound_victory = document.querySelector('#sound-victory');
+let sound_button = document.querySelector('#sound-button');
+let sound_round_won = document.querySelector('#sound-round_won');
+let sound_toggle = document.querySelector('#sound-toggle');
+
+const playSound = (name) => {
+    switch(name) {
+        case "bet set":
+            sound_bet_set.currentTime = 0;
+            sound_bet_set.play();
+            break;
+        case "chip 1":
+            sound_chip_1.currentTime = 0;
+            sound_chip_1.play();
+            break;
+        case "dealing cards":
+            sound_dealing_cards.currentTime = 0;
+            sound_dealing_cards.play();
+            break;
+        case "card shuffle":
+            sound_card_shuffle.currentTime = 0;
+            sound_card_shuffle.play();
+            break;
+        case "bust":
+            sound_bust.currentTime = 0;
+            sound_bust.play();
+            break;
+        case "sheesh":
+            sound_sheesh.currentTime = 0;
+            sound_sheesh.play();
+            break;
+        case "victory":
+            sound_victory.currentTime = 0;
+            sound_victory.play();
+            break;
+        case "button":
+            sound_button.currentTime = 0;
+            sound_button.play();
+            break;
+        case "round won":
+            sound_round_won.currentTime = 0;
+            sound_round_won.play();
+            break;
+        case "toggle":
+            sound_toggle.currentTime = 0;
+            sound_toggle.play();
+            break;
     }
 }
 

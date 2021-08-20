@@ -146,6 +146,20 @@ header {
 
 .dealer-cards {
     grid-area: dealer-cards;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+}
+
+#dealer-points {
+    display: none;
+    position: absolute;
+    top: 55%;
+}
+
+#dealer-points.show {
+    display: block;
 }
 
 .deck {
@@ -199,7 +213,7 @@ header {
 
 .points {
     font-size: 1.5rem;
-    justify-self: center;
+    /* justify-self: center; */
 }
 
 .card {
@@ -856,7 +870,7 @@ header {
 }
 
 .finalText {
-    font-size: 3rem;
+    font-size: 2.5em;
     margin-bottom: 0.5em;
 }
 
@@ -888,7 +902,7 @@ The game needs to be mobile first
     }
 
     .results-overlay {
-        width: 40%;
+        width: 50%;
     }
     
 }
