@@ -1,0 +1,1030 @@
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Playfair Display', serif;
+}
+
+body {
+    color: #FFF;
+    background-color: rgb(236, 234, 234);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100vh;
+}
+
+/* 
+
+Mobile nav bar code
+
+*/
+
+header {
+    width: 100%;
+    background: rgb(0, 147, 0);
+    display: flex;
+    align-items: center;
+    padding: 0.75em 0;
+}
+
+.nav {
+    width: 92.5%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+}
+
+#gameTitle {
+    font-size: 2.25rem;
+    font-weight: 300;
+    /* margin-left: 0.25em; */
+}
+
+.nav-btn {
+    width: 165px;
+    color: white;
+    font-size: 1.5rem;
+    font-weight: 700;
+    background-color: rgb(0, 147, 0);
+    border: 1px solid rgb(46, 46, 46);
+    border-radius: 5px;
+}
+
+.nav-btn:active {
+    color: rgb(211, 211, 211);
+    background-color: rgb(0, 105, 0);
+}
+
+.game-btn {
+    width: 125px;
+    height: 50px;
+    color: white;
+    font-size: 1.5rem;
+    font-weight: 700;
+    background-color: rgb(0, 105, 0);
+    border: 2px solid rgba(46, 46, 46, 0.50);
+    border-radius: 5px;
+    margin-right: 0.5em;
+    /* FIXME: I may remove this as it pushes the game board up a little.
+              It is here to give my game a chance to "breath" */
+    margin-bottom: 0.25em;
+}
+
+.game-btn:hover {
+    background-color: rgb(0, 120, 0);
+}
+
+.game-btn:active {
+    color: rgb(211, 211, 211);
+    background-color: rgb(0, 71, 0);
+}
+
+/* 
+
+    Setup the look of the poker table
+
+*/
+
+.table {
+    width: 100%;
+    height: 100%;
+}
+
+.border {
+    width: 100%;
+    height: 100%;
+    background-color: rgb(0, 105, 0);
+}
+
+.surface {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    box-shadow: inset 0px 0px 2px black;
+    /* Adds over image to the background */
+    background-image: url('./assets/imgs/logo.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+    /* 
+        TODO: Styling to give the table some texture
+    */
+    /* 
+        Makes it so you can not select and highlight text
+    */
+    user-select: none;
+}
+
+/* .container {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr 0.75fr 1.25fr 0.5fr;
+    gap: 0px 0px;
+    grid-auto-flow: row;
+    grid-template-areas:
+      "dealer-cards dealer-cards dealer-cards"
+      ". middle-of-board deck"
+      "player-bet middle-of-board player-money"
+      "player-bet middle-of-board player-money"
+      "player-cards player-cards player-cards"
+      "btns btns btns";
+      padding: 0.75em 0.75em 0em 0.75em;
+} */
+
+.container {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 0.5fr 1fr 1fr 1.45fr 0.5fr;
+    gap: 0px 0px;
+    grid-template-areas: "dealer-cards dealer-cards deck" "dealer-cards dealer-cards ." "player-bet . player-money" "player-bet . player-money" "player-cards player-cards player-cards" "btns btns btns";
+    padding: 0.75em 0.75em 0em 0.75em;
+}
+
+.game-rules {
+    display: none;
+}
+
+.dealer-cards {
+    grid-area: dealer-cards;
+}
+
+.deck {
+    grid-area: deck;
+    display: flex;
+    justify-content: center;
+}
+
+.player-bet {
+    grid-area: player-bet;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.middle-of-board {
+    grid-area: middle-of-board;
+}
+
+.player-cards {
+    grid-area: player-cards;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.player-money {
+    grid-area: player-money;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* Should keep all of the content closer to the player's side
+       if something is added to it (e,g, more chips even though this 
+       should not happen)
+    */
+    justify-content: center;
+}
+
+.button-area {
+    grid-area: button-area;
+}
+
+.btns {
+    grid-area: btns;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.points {
+    font-size: 1.5rem;
+    justify-self: center;
+}
+
+.card {
+    position: relative;
+    width: 70px;
+    height: 96px;
+    background-color: white;
+    box-shadow: 0px 3px 2px rgba(0, 0, 0, 0.250);
+    border-radius: 5px;
+    background-repeat: no-repeat;
+    background-position: center;
+    /*  Puts space on right of each card
+        TODO: Change this to be added somewhere else
+    */
+    margin-right: 0.5em;
+}
+
+.card.red {
+    color: #C83000;
+}
+
+.card.black {
+    color: #000000;
+}
+
+.card::before, .card::after {
+    position: absolute;
+    content: attr(data-value);
+    font-weight: 700;
+    font-size: 1.25rem;
+}
+
+.card::before {
+    top: 0.1125em;
+    left: 0.3em;
+}
+
+.card::after {
+    bottom: 0.1125em;
+    right: 0.3em;
+    transform: rotate(180deg);
+}
+
+.card-deck {
+    position: relative;
+    width: 81px;
+    height: 95px;
+}
+
+.red-deck {
+    background-image: url('./assets/imgs/deck_red.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.blue-deck {
+    background-image: url('./assets/imgs/deck_blue.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.diamonds {
+    background-image: url('./assets/imgs/suits/diamond.svg');
+}
+
+.clubs {
+    background-image: url('./assets/imgs/suits/club.svg');
+}
+
+.hearts {
+    background-image: url('./assets/imgs/suits/heart.svg');
+}
+
+.spades {
+    background-image: url('./assets/imgs/suits/spade.svg');
+}
+
+.flipped-red {
+    background-color: rgba(0, 0, 0, 0.021);
+    box-shadow: none;
+    background-image: url('./assets/imgs/card_red_back.svg');
+}
+
+.flipped-red::before, .flipped-red::after {
+    content: '';
+}
+
+.flipped-blue {
+    background-color: rgba(0, 0, 0, 0.021);
+    box-shadow: none;
+    background-image: url('./assets/imgs/card_blue_back.svg');
+}
+
+.flipped-blue::before, .flipped-blue::after {
+    content: '';
+}
+
+.card-container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    /* outline: 1px solid yellow; */
+}
+
+.card-set {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    /* outline: 1px solid coral; */
+}
+
+.set_1 {
+    top: 0rem;
+    left: 0rem;
+}
+
+.set_2 {
+    top: 1.40rem;
+    left: 1.5rem;
+}
+
+.set_3 {
+    top: 2.80rem;
+    left: 0rem;
+}
+
+.set_4 {
+    top: 4.20rem;
+    left: 1.5rem;
+}
+
+.label {
+    font-weight: 700;
+    font-size: 1.5rem;
+}
+
+#player-currentMoney {
+    margin-bottom: 1.1125em;
+}
+
+#betting-amount {
+    margin-bottom: 1.1125em;
+}
+
+.input-btn {
+    padding: 0.25em 1em;
+    background-color: rgba(0, 0, 0, 0.55);
+    box-shadow: inset 0px 1px 1px rgba(0, 0, 0, 0.250);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.input-btn:hover {
+    background-color: rgba(0, 0, 0, 0.50);
+}
+
+.no-hover:hover {
+    background-color: rgba(0, 0, 0, 0.75);
+}
+
+.input-btn:active {
+    background-color: rgba(0, 0, 0, 0.85);
+}
+
+.money-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /* flex-direction: column; */
+}
+
+.money-row {
+    display: flex;
+    justify-content: space-between;
+    /* outline: 2px solid red; */
+    flex-direction: column;
+}
+
+/* Container for my stacks */
+
+.chip-stack {
+    position: relative;
+    /* padding-right: 3.5em; */
+    margin-right: 3.5rem;
+    /* outline: 2px solid red; */
+    margin-bottom: 3rem;
+}
+
+.money-container-flipped {
+    flex-direction: column;
+}
+
+.money-row-flipped {
+    flex-direction: row;
+    padding-bottom: 3.5rem;
+}
+
+.chip-stack-flipped {
+    margin-bottom: 0rem;
+}
+
+/* Use SVGs. They look much better and are crisper */
+
+.chip {
+    position: absolute;
+    width: 55px;
+    height: 55px;
+}
+
+.chip_ten {
+    background-image: url('./assets/imgs/10.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.chip_twenty {
+    background-image: url('./assets/imgs/20.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.chip_fifty {
+    background-image: url('./assets/imgs/50.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.chip_hundred {
+    background-image: url('./assets/imgs/100.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.chip_big {
+    position: relative;
+    width: 72px;
+    height: 72px;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.chip_ten_big {
+    background-image: url('./assets/imgs/10_big.svg');
+}
+
+.chip_twenty_big {
+    background-image: url('./assets/imgs/20_big.svg');
+}
+
+.chip_fifty_big {
+    background-image: url('./assets/imgs/50_big.svg');
+}
+
+.chip_hundred_big {
+    background-image: url('./assets/imgs/100_big.svg');
+}
+
+.chip_10_btn, .chip_20_btn, .chip_50_btn, .chip_100_btn {
+    position: relative;
+    width: 86px;
+    height: 86px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: #777676;
+    border: 1px solid #646464;
+    box-shadow: inset 0px 2px 2px rgba(0, 0%, 0%, 0.25);
+    border-radius: 50px;
+}
+
+.chip_10_btn:hover, .chip_20_btn:hover, .chip_50_btn:hover, .chip_100_btn:hover {
+    background-color: #8a8a8a;
+}
+
+.chip_10_btn:active, .chip_20_btn:active, .chip_50_btn:active, .chip_100_btn:active {
+    background-color: #3f3f3f;
+}
+
+.chip_10_btn::before {
+    position: absolute;
+    content: '';
+    background-image: url('./assets/imgs/10_big.svg');
+    top: 0.55rem;
+    left: 0.40rem;
+    width: 72px;
+    height: 72px;
+}
+
+.chip_20_btn::before {
+    position: absolute;
+    content: '';
+    background-image: url('./assets/imgs/20_big.svg');
+    top: 0.55rem;
+    left: 0.40rem;
+    width: 72px;
+    height: 72px;
+}
+
+.chip_50_btn::before {
+    position: absolute;
+    content: '';
+    background-image: url('./assets/imgs/50_big.svg');
+    top: 0.55rem;
+    left: 0.40rem;
+    width: 72px;
+    height: 72px;
+}
+
+.chip_100_btn::before {
+    position: absolute;
+    content: '';
+    background-image: url('./assets/imgs/100_big.svg');
+    top: 0.55rem;
+    left: 0.40rem;
+    width: 72px;
+    height: 72px;
+}
+
+/* Positions to make stacks */
+
+.chip_1 {
+    top: 0px;
+}
+
+.chip_2 {
+    top: -3px;
+}
+
+.chip_3 {
+    top: -6px;
+}
+
+.chip_4 {
+    top: -9px;
+}
+
+.chip_5 {
+    top: -12px;
+}
+
+.chip_6 {
+    top: -15px;
+}
+
+.chip_7 {
+    top: -18px;
+}
+
+.chip_8 {
+    top: -21px;
+}
+
+.chip_9 {
+    top: -24px;
+}
+
+.chip_10 {
+    top: -27px;
+}
+
+.chip_11 {
+    top: -30px;
+}
+
+.chip_12 {
+    top: -33px;
+}
+
+.rules-screen {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.rules-screen.show {
+    display: flex;
+    text-align: center;
+}
+
+.rules {
+    color: white;
+    font-size: 2rem;
+    margin-bottom: 0.5em;
+}
+
+.close-rules-btn {
+    padding: 0.5em 0.75em;
+    font-size: 2rem;
+}
+
+.close-rules-btn:active {
+    color: white;
+    background-color: black;
+}
+
+.start-screen {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 105, 0, 1.0);
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.start-screen.show {
+    display: flex;
+}
+
+.start-btn {
+    color: white;
+    font-size: 1.5rem;
+    font-weight: 700;
+    background-color: rgb(0, 105, 0);
+    border: 2px solid rgba(46, 46, 46, 0.50);
+    border-radius: 5px;
+    margin-right: 0.5em;
+    padding: 0.75em 1em;
+}
+
+.start-btn:hover {
+    background-color: rgb(0, 120, 0);
+}
+
+.start-btn:active {
+    color: rgb(211, 211, 211);
+    background-color: rgb(0, 71, 0);
+}
+
+.logo {
+    font-size: 3.5rem;
+}
+
+.rotated-1 {
+    transform: rotate(-45deg);
+}
+
+.rotated-2 {
+    transform: rotate(45deg);
+}
+
+.start-item {
+    margin-bottom: 2.5rem;
+    margin-top: 2.5rem;
+}
+
+.game-overlay {
+    /* 
+        FIXME: SET THIS TO DISPLAY FLEX
+    */
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.35);
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.game-overlay.show {
+    display: flex;
+}
+
+.betting-overlay {
+    display: none;
+    width: 80%;
+    height: 80%;
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.85);
+    border-radius: 5px;
+    flex-direction: column;
+    /* justify-content: center; */
+    align-items: center;
+}
+
+.betting-overlay.show {
+    display: flex;
+}
+
+.betting-area-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+.betting-chip-btns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 1em 1em;
+    grid-auto-flow: row;
+    grid-template-areas: "chip_10_btn chip_20_btn" "chip_50_btn chip_100_btn";
+}
+
+.chip_10_btn {
+    grid-area: chip_10_btn;
+}
+
+.chip_20_btn {
+    grid-area: chip_20_btn;
+}
+
+.chip_50_btn {
+    grid-area: chip_50_btn;
+}
+
+.chip_100_btn {
+    grid-area: chip_100_btn;
+}
+
+.betting-btns,
+.play-again {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 1em;
+}
+
+.betting-btn,
+.play-again {
+    width: 125px;
+    height: 50px;
+    color: white;
+    font-size: 1.5rem;
+    font-weight: 700;
+    background-color: rgba(105, 105, 105, 0.85);
+    border: 1px solid rgba(117, 117, 117, 0.75);
+    box-shadow: 0px 0px 2px rgba(226, 226, 226, 0.25);
+    border-radius: 5px;
+    margin-right: 0.5em;
+}
+
+.betting-btn:hover,
+.play-again:hover {
+    background-color: rgb(134, 134, 134);
+}
+
+.betting-btn:active ,
+.play-again:active{
+    background-color: rgb(58, 58, 58);
+}
+
+.raise {
+    background-image: url('./assets/imgs/up-arrow.svg');
+    background-repeat: no-repeat;
+    background-position: center; 
+}
+
+.lower {
+    background-image: url('./assets/imgs/down-arrow.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.current-money {
+    font-size: 3rem;
+    font-weight: 700;
+    margin-top: 0.25em;
+}
+
+.betting-area {
+    background-color: #545454;
+    border: 1px solid #646464;
+    box-shadow: inset 0px 1px 1px rgba(0, 0, 0, 0.250);
+    border-radius: 5px;
+    width: 268px;
+    height: 246px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#current-bet-label {
+    font-size: 1.5rem;
+    margin-bottom: 0.25em;
+}
+
+.current-bet {
+    width: 4.75em;
+    padding: 0.25em 1em;
+    font-size: 1.5rem;
+    font-weight: 700;
+    background-color: rgba(0, 0, 0, 0.55);
+    box-shadow: inset 0px 1px 1px rgba(0, 0, 0, 0.250);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    margin-bottom: 1.5em;
+    text-align: center;
+}
+
+.results-overlay {
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.80);
+    border-radius: 10px;
+    padding: 0.25em 0em;
+    width: 80%;
+}
+
+.results-overlay.show {
+    display: block;
+}
+
+.result {
+    text-align: center;
+    font-size: 3rem;
+    text-shadow: 0px 5px 5px rgba(0, 0, 0, 0.50);
+}
+
+.winnerOrLoser {
+    display: none;
+    width: 80%;
+    height: 80%;
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.85);
+    border-radius: 5px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    /* May remove this if I add a
+       nicer screen */
+    text-align: center;
+}
+
+.winnerOrLoser.show {
+    display: flex;
+}
+
+.finalText {
+    font-size: 3rem;
+    margin-bottom: 0.5em;
+}
+
+/* 
+
+This is going to be how I do everything for desktop.
+The game needs to be mobile first
+
+*/
+
+/* Should start to transition into tablet like game */
+
+@media(min-width: 600px) {
+    .label {
+        font-size: 2rem;
+    }
+
+    .money-container {
+        flex-direction: column;
+    }
+
+    .money-row {
+        flex-direction: row;
+        padding-bottom: 3.5rem;
+    }
+
+    .chip-stack {
+        margin-bottom: 0rem;
+    }
+
+    .results-overlay {
+        width: 40%;
+    }
+    
+}
+
+@media(min-width: 768px) {
+    .label {
+        font-size: 2rem;
+    }
+
+    .betting-overlay {
+        height: 70%;
+    }
+
+    .betting-area-container {
+        flex-direction: row;
+    }
+}
+
+/* 
+    Should become desktop like game
+*/
+
+@media(min-width: 850px) {
+
+    header {
+        margin-bottom: 1.5em;
+    }
+
+    .nav {
+        width: 95%;
+    }
+
+    .table {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        order: 1;
+        /* Original height was 500px, but changed */
+        width: 800px;
+        height: 600px;
+        /* Makes it where the table can not get smaller than this */
+        min-width: 800px;
+        min-height: 600px;
+        /* 
+            TODO: A gradiant with a hard stop in the middle at a 
+            45 degree angle to it really look like a table at the corners
+        */
+        background-color: rgb(104, 72, 12);
+        border-radius: 5px;
+        box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.466);
+    }
+
+    .border {
+        width: 95%;
+        height: 93%;
+        background-color: rgb(0, 105, 0);
+        border-radius: 5px;
+    }
+
+    .surface {
+        border-radius: 5px;
+    }
+
+    /* 
+    
+        TODO: Add button container here under player money
+    */
+    .container {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+        grid-template-rows: 1fr 1fr 1fr;
+        gap: 0px 0px;
+        grid-template-areas: "game-rules dealer-cards dealer-cards deck" "player-bet middle-of-board middle-of-board player-money" "player-bet player-cards player-cards btns";
+        padding: 0.75em 0.75em;
+    }
+
+    .game-rules {
+        grid-area: game-rules;
+    }
+
+    .dealer-cards {
+        grid-area: dealer-cards;
+    }
+
+    .deck {
+        grid-area: deck;
+    }
+
+    .player-bet {
+        grid-area: player-bet;
+        /* display: flex;
+        align-items: center;
+        justify-content: flex-start; */
+    }
+
+    .middle-of-board {
+        grid-area: middle-of-board;
+    }
+
+    .player-cards {
+        grid-area: player-cards;
+    }
+
+    .player-money {
+        grid-area: player-money;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        /* Should keep all of the content closer to the player's side
+           if something is added to it (e,g, more chips even though this 
+           should not happen)
+        */
+        justify-content: end;
+    }
+
+    .btns {
+        grid-area: btns;
+        flex-direction: column;
+    }
+
+    .label {
+        font-size: 2rem;
+    }
+
+    .game-btn {
+        margin-right: 0px;
+        margin-bottom: 0.5em;
+    }
+
+    .bet-btn {
+        margin-bottom: 0px;
+    }
+
+    .betting-overlay {
+        height: 80%;
+    }
+}
+
+@media(min-width: 1140px) {}

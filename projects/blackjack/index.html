@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blackjack - Jordan Blount</title>
+    <script defer src="game.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,900;1,700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    
+</head>
+<body>
+    <header>
+        <div class="nav">
+            <h1 id="gameTitle">Blackjack</h1>
+            <button class="nav-btn" id="rules-btn">Rules</button>
+        </div>
+    </header>
+
+    <div class="table">
+        <div class="border">  
+            <div class="surface container" id="surface">
+                <div class="game-rules surfaces">
+                    <!-- This technically doesn't exist. HI! -->
+                    <!-- Will be used if I expand this to a desktop app -->
+                </div>
+                <div class="dealer-cards surfaces">
+                    <div class="card-container" id="dealer-cards">
+                        
+                    </div>
+                </div>
+                <div class="deck">
+                    <div class="card-deck red-deck"></div>
+                </div>
+                <div class="player-bet surfaces">
+                    <!-- TODO: Add a money container here to fix resizing issue -->
+                    <!-- FIXME: When the game is being played on mobile, the money rows should only be 2 stacks deep -->
+                    <h1 class="label" id="bet">Bet</h1>
+                    <button class="input-btn label" id="betting-amount">$0</button>
+                    <div class="money-container">
+                        <div class="money-row">
+                            <div class="chip-stack stack_10_1">
+                                <div class="chip chip_twenty chip_1"></div>
+                                <div class="chip chip_twenty chip_2"></div>
+                                <div class="chip chip_twenty chip_3"></div>
+                                <div class="chip chip_fifty chip_4"></div>
+                                <div class="chip chip_fifty chip_5"></div>
+                                <div class="chip chip_hundred chip_6"></div>
+                                <div class="chip chip_hundred chip_7"></div>
+                                <div class="chip chip_hundred chip_8"></div>
+                            </div>
+                            <div class="chip-stack stack_10_1">
+                                <div class="chip chip_twenty chip_1"></div>
+                                <div class="chip chip_twenty chip_2"></div>
+                                <div class="chip chip_twenty chip_3"></div>
+                                <div class="chip chip_fifty chip_4"></div>
+                                <div class="chip chip_fifty chip_5"></div>
+                                <div class="chip chip_hundred chip_6"></div>
+                                <div class="chip chip_hundred chip_7"></div>
+                                <div class="chip chip_hundred chip_8"></div>
+                            </div>
+                            <div class="chip-stack stack_10_1">
+                                <div class="chip chip_twenty chip_1"></div>
+                                <div class="chip chip_twenty chip_2"></div>
+                                <div class="chip chip_twenty chip_3"></div>
+                                <div class="chip chip_fifty chip_4"></div>
+                                <div class="chip chip_fifty chip_5"></div>
+                                <div class="chip chip_hundred chip_6"></div>
+                                <div class="chip chip_hundred chip_7"></div>
+                                <div class="chip chip_hundred chip_8"></div>
+                            </div>
+                        </div>
+                        <div class="money-row">
+                            <div class="chip-stack stack_10_1">
+                                <div class="chip chip_twenty chip_1"></div>
+                                <div class="chip chip_twenty chip_2"></div>
+                                <div class="chip chip_twenty chip_3"></div>
+                                <div class="chip chip_fifty chip_4"></div>
+                                <div class="chip chip_fifty chip_5"></div>
+                                <div class="chip chip_hundred chip_6"></div>
+                                <div class="chip chip_hundred chip_7"></div>
+                                <div class="chip chip_hundred chip_8"></div>
+                            </div>
+                            <div class="chip-stack stack_10_1">
+                                <div class="chip chip_twenty chip_1"></div>
+                                <div class="chip chip_twenty chip_2"></div>
+                                <div class="chip chip_twenty chip_3"></div>
+                                <div class="chip chip_fifty chip_4"></div>
+                                <div class="chip chip_fifty chip_5"></div>
+                                <div class="chip chip_hundred chip_6"></div>
+                                <div class="chip chip_hundred chip_7"></div>
+                                <div class="chip chip_hundred chip_8"></div>
+                            </div>
+                            <div class="chip-stack stack_10_1">
+                                <div class="chip chip_twenty chip_1"></div>
+                                <div class="chip chip_twenty chip_2"></div>
+                                <div class="chip chip_twenty chip_3"></div>
+                                <div class="chip chip_fifty chip_4"></div>
+                                <div class="chip chip_fifty chip_5"></div>
+                                <div class="chip chip_hundred chip_6"></div>
+                                <div class="chip chip_hundred chip_7"></div>
+                                <div class="chip chip_hundred chip_8"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="middle-of-board">
+
+                </div>
+                <div class="player-cards surfaces">
+                    <p class="points" id="player-points">0</p>
+                    <div class="card-container" id="player-cards">
+
+                    </div>
+                </div>
+                <div class="player-money surfaces">
+                    <h1 class="label" id="player-currentMoney">$0</h1>
+                    <div class="money-container">
+                        <div class="money-row">
+                            <div class="chip-stack stack_1">
+                                <div class="chip chip_hundred chip_1"></div>
+                                <div class="chip chip_hundred chip_2"></div>
+                                <div class="chip chip_hundred chip_3"></div>
+                                <div class="chip chip_hundred chip_4"></div>
+                                <div class="chip chip_hundred chip_5"></div>
+                                <div class="chip chip_hundred chip_6"></div>
+                                <div class="chip chip_hundred chip_7"></div>
+                                <div class="chip chip_hundred chip_8"></div>
+                                <div class="chip chip_hundred chip_9"></div>
+                                <div class="chip chip_hundred chip_10"></div>
+                            </div>
+                            <div class="chip-stack stack_2">
+                                <div class="chip chip_fifty chip_1"></div>
+                                <div class="chip chip_fifty chip_2"></div>
+                                <div class="chip chip_fifty chip_3"></div>
+                                <div class="chip chip_fifty chip_4"></div>
+                                <div class="chip chip_fifty chip_5"></div>
+                                <div class="chip chip_fifty chip_6"></div>
+                                <div class="chip chip_fifty chip_7"></div>
+                                <div class="chip chip_fifty chip_8"></div>
+                            </div>
+                            <div class="chip-stack stack_3">
+                                <div class="chip chip_twenty chip_1"></div>
+                                <div class="chip chip_twenty chip_2"></div>
+                                <div class="chip chip_twenty chip_3"></div>
+                            </div>
+                        </div>
+                        <div class="money-row">
+                            <div class="chip-stack stack_4">
+                                <div class="chip chip_ten chip_1"></div>
+                                <div class="chip chip_ten chip_2"></div>
+                                <div class="chip chip_ten chip_3"></div>
+                                <div class="chip chip_ten chip_4"></div>
+                                <div class="chip chip_ten chip_5"></div>
+                                <div class="chip chip_ten chip_6"></div>
+                                <div class="chip chip_ten chip_7"></div>
+                                <div class="chip chip_ten chip_8"></div>
+                            </div>
+                            <div class="chip-stack stack_5">
+                                <div class="chip chip_ten chip_1"></div>
+                                <div class="chip chip_ten chip_2"></div>
+                                <div class="chip chip_ten chip_3"></div>
+                                <div class="chip chip_ten chip_4"></div>
+                                <div class="chip chip_ten chip_5"></div>
+                                <div class="chip chip_ten chip_6"></div>
+                                <div class="chip chip_ten chip_7"></div>
+                                <div class="chip chip_ten chip_8"></div>
+                            </div>
+                            <div class="chip-stack stack_6">
+                                <div class="chip chip_ten chip_1"></div>
+                                <div class="chip chip_ten chip_2"></div>
+                                <div class="chip chip_ten chip_3"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="btns surfaces" id="btns">
+                    <!-- <button class="game-btn">Hit</button>
+                    <button class="game-btn">Hold</button> -->
+                </div>
+                <!-- This is an overlay where we are going to do different things -->
+                <div class="game-overlay" id="game-overlay">
+                    <div class="betting-overlay" id="betting-overlay">
+                        <p class="current-money" id="current-money">$0</p>
+                        <div class="betting-area-container">
+                            <div class="betting-area">
+                                <h1 id="current-bet-label">Bet</h1>
+                                <div class="current-bet" id="current-bet">$1000</div>
+                                <div class="money-container money-container-flipped" id="betting-container">
+
+                                </div>
+                            </div>
+                            <div class="betting-chip-btns" id="betting-chip-btns">
+                                <button class="chip_10_btn" data-value="10"></button>
+                                <button class="chip_20_btn" data-value="20"></button>
+                                <button class="chip_50_btn" data-value="50"></button>
+                                <button class="chip_100_btn" data-value="100"></button>
+                            </div>
+                        </div>
+                        <div class="betting-btns" id="betting-btns">
+                            <button class="betting-btn raise" id="lowerOrRaise"></button>
+                            <button class="betting-btn" id="place-bet">Place</button>
+                        </div>
+                    </div>
+                    <div class="winnerOrLoser" id="winnerOrLoser">
+                        <p class="finalText" id="finalText">Winner!</p>
+                        <button class="play-again" id="play-again">Play Again</button>
+                    </div>
+                </div>
+                <div class="results-overlay" id="results-overlay">
+                    <h1 class="result" id="result">It's a tie</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="start-screen" id="start-screen">
+        <div class="card-deck red-deck rotated-1 start-item"></div>
+        <div class="logo">Blackjack</div>
+        <div class="card-deck blue-deck rotated-2 start-item"></div>
+        <button class="start-btn" id="start-btn">Start Game!</button>
+    </div>
+
+    <div class="rules-screen" id="rules-screen">
+        <div class="rules" id="rules">Test</div>
+        <button class="close-rules-btn" id="close-rules-btn">Close</button>
+    </div>
+
+</body>
+</html>
