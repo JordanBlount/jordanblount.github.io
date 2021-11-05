@@ -1,2 +1,2 @@
-My personal website for the Per Scholas Prework.
+My personal Github pages site. Currently hosting my Blackjack game.
 
