@@ -106,6 +106,7 @@ header {
     background-image: url('./assets/imgs/logo.svg');
     background-repeat: no-repeat;
     background-position: center;
+    
     /* 
         TODO: Styling to give the table some texture
     */
@@ -114,6 +115,13 @@ header {
     */
     user-select: none;
 }
+
+/* .surface__logo {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+} */
 
 /* .container {
     display: grid;
@@ -594,7 +602,7 @@ header {
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(0, 0, 0, 0.6);
+    background-color: rgba(0, 0, 0, 0.85);
     flex-direction: column;
     justify-content: center;
     align-items: center;
@@ -607,8 +615,22 @@ header {
 
 .rules {
     color: white;
-    font-size: 2rem;
-    margin-bottom: 0.5em;
+    font-size: 1.35rem;
+    width: 85%;
+    margin-bottom: 1.5rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.rules__text {
+    margin-bottom: 2rem;
+}
+
+.rules__warning {
+    text-decoration: underline;
+    text-decoration-color: rgb(201, 78, 78);
+    text-decoration-thickness: 4px;
+    padding-right: 0.375rem;
 }
 
 .close-rules-btn {
@@ -904,6 +926,10 @@ The game needs to be mobile first
     .results-overlay {
         width: 50%;
     }
+
+    .rules {
+        width: 85%;
+    }
     
 }
 
@@ -981,6 +1007,10 @@ The game needs to be mobile first
 
     .game-rules {
         grid-area: game-rules;
+    }
+
+    .rules {
+        width: 50%
     }
 
     .dealer-cards {

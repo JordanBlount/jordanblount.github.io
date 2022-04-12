@@ -8,6 +8,8 @@ https://www.youtube.com/watch?v=zuZqw12MrVI
 
 https://stackoverflow.com/questions/18235709/css-placing-one-image-on-top-of-another
 
+https://www.youtube.com/watch?v=VuN8qwZoego&list=PLu8EoSxDXHP6CGK4YVJhL_VWetA865GOH
+
 TODO USE
 
 https://animate.style/
